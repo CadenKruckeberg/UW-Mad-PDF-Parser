@@ -1,0 +1,6 @@
+/debug/
+/output/
+venv/
+.venv/
+__pycache__/
+/TODO.txt
