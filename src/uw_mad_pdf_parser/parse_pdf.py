@@ -75,7 +75,7 @@ def parse_dir(term_code: str, path_to_dir_pdf: str, delimiter: str = '\t', debug
                 cropped = page.crop((term_heuristics['margins']['left'], term_heuristics['margins']['upper'], page.width - term_heuristics['margins']['right'], page.height - term_heuristics['margins']['lower']))
                 im = cropped.to_image(resolution=150)
                 im.draw_rects(cropped.extract_words())
-                for x in (min_x0 + 1,) + term_heuristics['column_lines'] + (max_x1 + 3,):
+                for x in (min_x0 - 3,) + term_heuristics['column_lines'] + (max_x1 + 3,):
                     im.draw_vline(x, stroke='red', stroke_width=2)
                 im.save(Path(output_dir) / f'{term_code}-dir-{page_num}.png')
             return
@@ -101,7 +101,7 @@ def parse_dir(term_code: str, path_to_dir_pdf: str, delimiter: str = '\t', debug
                 table = cropped.extract_table({
                     'vertical_strategy': 'explicit',
                     'horizontal_strategy': term_heuristics['horizontal_strategy'],
-                    'explicit_vertical_lines': (min_x0 + 1,) + term_heuristics['column_lines'] + (max_x1 + 3,), # I don't like that we are ADDING to the min x0, but its the smallest possible value to get pdfplumber to parse it correctly
+                    'explicit_vertical_lines': (min_x0 - 3,) + term_heuristics['column_lines'] + (max_x1 + 3,),
                 })
 
                 if table:
@@ -109,6 +109,7 @@ def parse_dir(term_code: str, path_to_dir_pdf: str, delimiter: str = '\t', debug
                         if any(row):
                             cleaned_row = [ ' '.join(cell.split()) if cell else '' for cell in row ] # take newlines out of values
                             if tuple(cleaned_row) == term_heuristics['pdf_headers'] or \
+                                len(cleaned_row) != len(term_heuristics['pdf_headers']) or \
                                 not ''.join(cleaned_row[-4:]): # if the last 4 columns are empty, we assume it isn't a valid row. the benefit is that sometime the subject: foo is a row and gets rejected
                                 if output_skipped: skip_writer.writerow(cleaned_row)
                                 continue
@@ -127,7 +128,7 @@ def parse_grades(term_code: str, path_to_grades_pdf: str, delimiter: str = '\t',
                 cropped = page.crop((term_heuristics['margins']['left'], term_heuristics['margins']['upper'], page.width - term_heuristics['margins']['right'], page.height - term_heuristics['margins']['lower']))
                 im = cropped.to_image(resolution=150)
                 im.draw_rects(cropped.extract_words())
-                for x in (min_x0 + 1,) + term_heuristics['column_lines'] + (max_x1 + 3,):
+                for x in (min_x0 - 3,) + term_heuristics['column_lines'] + (max_x1 + 3,):
                     im.draw_vline(x, stroke='red', stroke_width=2)
                 im.save(Path(output_dir) / f'{term_code}-grades-{page_num}.png')
             return
@@ -155,7 +156,7 @@ def parse_grades(term_code: str, path_to_grades_pdf: str, delimiter: str = '\t',
                 table = cropped.extract_table({
                     'vertical_strategy': 'explicit',
                     'horizontal_strategy': term_heuristics['horizontal_strategy'],
-                    'explicit_vertical_lines': (min_x0 - 1,) + term_heuristics['column_lines'] + (max_x1 + 3,),
+                    'explicit_vertical_lines': (min_x0 - 3,) + term_heuristics['column_lines'] + (max_x1 + 3,),
                 })
 
                 if table:

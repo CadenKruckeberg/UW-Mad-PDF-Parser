@@ -4,10 +4,10 @@ DIR = {
             {'header': 'SUBJECT', 'regex': r'SUBJECT:(.*\))'},
         ),
         'column_lines': (52, 76, 105, 129, 149, 212, 227, 239, 251, 263, 275, 287, 300, 365, 430, 485, 549),
-        'horizontal_strategy': 'lines',
+        'horizontal_strategy': 'text',
         'pdf_headers': ('SESS', 'CAT', 'COMP', 'SECT', 'OFFER', 'Time', 'M', 'T', 'W', 'R', 'F', 'S', 'X', 'FACILITY_ID', 'COMB_ENRN', 'ENRL_TOT', 'EMPLID', 'INSTRUCTOR ROLE/NAME'),
         'margins': {
-            'upper': 121,
+            'upper': 118,
             'lower': 34,
             'left': 0,
             'right': 0,
